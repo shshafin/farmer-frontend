@@ -21,13 +21,12 @@ export default function RelatedBlogPosts({
         console.log("res", res);
         if (res?.success && Array.isArray(res.data)) {
           // Filter kore same category er gulake rakha
-          const matched = res.data.filter(
-            (item) =>
-              item.category?.category === currentPost.category?.category && // বাংলা নাম ম্যাচিং
-              item.category?.englishName ===
-                currentPost.category?.englishName && // ইংরেজি নাম ম্যাচিং
-              item._id !== currentPost._id // বর্তমান পোস্ট বাদ দেওয়া
-          );
+         const matched = res.data.filter(
+  (item) =>
+    item.category.category === currentPost.category.category && // বাংলা নাম ম্যাচিং
+    item.category.englishName === currentPost.category.englishName && // ইংরেজি নাম ম্যাচিং
+    item._id !== currentPost._id // বর্তমান পোস্ট বাদ দেওয়া
+);
           console.log("first", matched);
           setRelatedItems(matched);
         }

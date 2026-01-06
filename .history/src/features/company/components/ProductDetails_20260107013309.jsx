@@ -22,21 +22,34 @@ export default function ProductDetails() {
     const loadData = async () => {
       setLoading(true);
       try {
+        // ১. কারেন্ট প্রোডাক্ট ফেচ করা
         const res = await fetchProductById(productId);
         const currentProduct = res.data;
         setProduct(currentProduct);
 
+        // ২. সব প্রোডাক্ট ফেচ করা রিলেটেড গ্যালারির জন্য
         const allRes = await fetchAllProducts();
         const allProducts = allRes.data || [];
 
-        // শুধুমাত্র কোম্পানির ওপর ভিত্তি করে ফিল্টার
+        // ৩. ফিল্টারিং লজিক (নিখুঁত করার জন্য)
         const filtered = allProducts.filter((p) => {
+          // IDs extract করা (Object হোক বা String)
           const pCompanyId = p.company?._id || p.company;
           const currCompanyId =
             currentProduct.company?._id || currentProduct.company;
-          return p._id !== productId && pCompanyId === currCompanyId;
+
+          const pCategoryId = p.category?._id || p.category;
+          const currCategoryId =
+            currentProduct.category?._id || currentProduct.category;
+
+          return (
+            p._id !== productId &&
+            pCompanyId === currCompanyId &&
+            pCategoryId === currCategoryId
+          );
         });
 
+        // ৪. গ্যালারি ডেটা ম্যাপ করা
         const galleryData = filtered.map((p) => ({
           id: p._id,
           name: p.productName,
@@ -45,14 +58,14 @@ export default function ProductDetails() {
 
         setGalleryItems(galleryData);
       } catch (err) {
-        console.error("Error:", err);
+        console.error("Error fetching product details:", err);
       } finally {
         setLoading(false);
       }
     };
 
     loadData();
-  }, [productId]);
+  }, [productId]); // productId চেঞ্জ হলেই আবার রান হবে
 
   if (loading)
     return (

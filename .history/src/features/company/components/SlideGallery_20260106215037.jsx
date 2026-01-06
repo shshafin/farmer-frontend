@@ -66,7 +66,7 @@ export default function SlideGallery({ items = [] }) {
               className="embla__slide"
               key={p.id}>
               <NavLink
-                to={`/productdetails/${p.id}`}
+                to={`/productdetails/${p.slug}`}
                 title={p.name}
                 className="block">
                 <img

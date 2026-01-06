@@ -23,10 +23,10 @@ export default function RelatedBlogPosts({
           // Filter kore same category er gulake rakha
           const matched = res.data.filter(
             (item) =>
-              item.category?.category === currentPost.category?.category &&
+              item.category.category === currentPost.category.category &&
               item._id !== currentPost._id
           );
-          console.log("first", matched);
+          console.log(first)
           setRelatedItems(matched);
         }
       } catch (err) {

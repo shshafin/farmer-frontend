@@ -273,7 +273,7 @@ export default function PostCard({
       </div>
 
       {/* COMMENT FORM (Restored from your logic but visible) */}
-      {/* <div className="comment-form">
+      <div className="comment-form">
         <textarea
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
@@ -284,7 +284,7 @@ export default function PostCard({
           onClick={submitComment}>
           {TEXT_COMMENT}
         </button>
-      </div> */}
+      </div> //
     </article>
   );
 }

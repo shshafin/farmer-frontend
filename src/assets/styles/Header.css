@@ -1,0 +1,330 @@
+.header {
+    padding: .75rem 1.5rem;
+    background-color: #161d26;
+    box-shadow: #0000001a 0 4px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, .154);
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    width: 100%;
+    display: flex;
+    z-index: 30;
+    top: 0;
+    right: 0;
+    left: 0;
+    position: fixed;
+    border-left: none;
+    border-right: none;
+}
+
+.header .group img {
+    width: 40px;
+    height: 40px;
+}
+
+.header h1 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 800;
+}
+
+@media only screen and (max-width: 970px) {
+    .header h1 {
+        font-size: 1rem;
+    }
+
+    .header .group {
+        min-width: 150px;
+    }
+}
+
+@media only screen and (max-width: 530px) {
+    .header .group {
+        display: none  !important;
+    }
+    .NavigationLinks {
+        justify-content: center;
+    }
+}
+
+.NavigationLinks {
+    width: 100%;
+    max-width: 620px;
+    justify-content: center;
+}
+
+.NavigationLinks .active {
+    background: rgb(37 99 235 / 1);
+    border-radius: .5rem;
+}
+
+.NavigationLinks > a img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1);
+    transition: filter 160ms ease;
+}
+
+.NavigationLinks a {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.NavigationLinks a:hover,
+.menuIcon:hover {
+    background: rgba(255, 255, 255, 0.089);
+    border-radius: .5rem;
+}
+
+.nav-notification {
+    position: relative;
+}
+
+.nav-icon-button {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: .5rem;
+    cursor: pointer;
+    transition: background 160ms ease, transform 160ms ease;
+}
+
+.nav-icon-button:hover,
+.nav-icon-button.is-open {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.nav-icon-button img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1);
+    transition: filter 160ms ease;
+}
+
+.nav-icon-button.is-open img {
+    filter: invert(0);
+}
+
+.nav-badge {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: #ef4444;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.45);
+}
+
+.notification-popover {
+    position: absolute;
+    top: calc(100% + 0.75rem);
+    right: 0;
+    width: clamp(280px, 45vw, 420px);
+    max-height: 70vh;
+    background: rgba(17, 24, 39, 0.97);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 1rem;
+    box-shadow: 0 24px 50px -20px rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(10px);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.notification-popover__header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.notification-popover__title {
+    color: #f9fafb;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.notification-popover__subtitle {
+    color: #9ca3af;
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+}
+
+.notification-clear {
+    background: rgba(255, 255, 255, 0.04);
+    color: #cbd5f5;
+    border: 1px solid rgba(129, 140, 248, 0.35);
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 160ms ease;
+}
+
+.notification-clear:hover:not(:disabled) {
+    background: rgba(129, 140, 248, 0.18);
+    color: #eef2ff;
+    border-color: rgba(129, 140, 248, 0.55);
+}
+
+.notification-clear:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.notification-popover__list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.75rem 0.5rem;
+}
+
+.notification-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.75rem;
+    padding: 0.65rem 0.75rem;
+    border-radius: 0.75rem;
+    transition: background 140ms ease;
+}
+
+.notification-item:hover {
+    background: rgba(59, 130, 246, 0.12);
+}
+
+.notification-avatar-wrapper {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.4);
+}
+
+.notification-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.notification-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+}
+
+.notification-author {
+    color: #f3f4f6;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: capitalize;
+}
+
+.notification-message {
+    color: #bfdbfe;
+    font-size: 0.85rem;
+    margin: 0;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.notification-time {
+    color: #94a3b8;
+    font-size: 0.75rem;
+}
+
+.notification-dismiss {
+    border: none;
+    background: rgba(148, 163, 184, 0.1);
+    color: #94a3b8;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 140ms ease;
+}
+
+.notification-dismiss:hover {
+    background: rgba(239, 68, 68, 0.18);
+    color: #fca5a5;
+}
+
+.notification-dismiss svg {
+    width: 14px;
+    height: 14px;
+}
+
+.notification-empty {
+    padding: 2rem 1.5rem;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 520px) {
+    .notification-popover {
+        top: 4rem;
+        left: 0%;
+        right: 0%;
+        width: 100% !important;
+        position: fixed;
+        width: min(320px, 92vw);
+        border-radius: 0;
+    }
+}
+
+.group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+}
+
+.group img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.menuIcon {
+    width: 40px;
+    height: 35px;
+    min-width: 40px;
+    min-height: 35px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: .5rem;
+    cursor: pointer;
+}
+
+.menuIcon img {
+    width: 100%;
+    height: 100%;
+    filter: invert(1);
+}

@@ -1,0 +1,80 @@
+.comment-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 12px;
+  background: var(--lighterGray);
+  border-radius: var(--radius);
+}
+
+.avatar {
+  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  border-radius: 9999px;
+  overflow: hidden;
+  border: 1px solid var(--cardBorder);
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 8px;
+}
+
+.comment-input {
+  flex: 1;
+  height: 40px;
+  padding: 8px 40px 8px 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--cardBorder);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.comment-input::placeholder {
+  color: var(--muted);
+}
+
+.comment-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
+.send-btn {
+  position: absolute;
+  right: 4px;
+  height: 34px;
+  width: 34px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.send-btn:hover {
+  background: var(--hover);
+}
+
+.send-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.send-icon {
+  width: 16px;
+  height: 16px;
+}

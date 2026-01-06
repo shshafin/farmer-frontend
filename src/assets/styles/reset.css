@@ -1,0 +1,86 @@
+@font-face {
+  font-family: 'Inter';
+  src: url('/src/assets/fonts/inter.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+/* 1. Box sizing and global defaults */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 2. Root defaults */
+html {
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%; /* Prevent iOS text zoom */
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* 3. Body defaults */
+body {
+  background-color: #fff;
+  color: #000;
+  font-smooth: antialiased;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 4. Remove default list styles */
+ul,
+ol {
+  list-style: none;
+}
+
+/* 5. Anchor elements */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 6. Media elements */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* 7. Form controls */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* 8. Tables */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* 9. Headings inherit font-size/weight for easier scaling */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}

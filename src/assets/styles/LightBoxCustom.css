@@ -1,0 +1,14 @@
+.yarl__container button svg {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    padding: .5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius);
+    margin: 1rem;
+}
+
+.yarl__container button svg:hover {
+    background: rgba(255, 255, 255, 0.178);
+}

@@ -1,0 +1,46 @@
+.liqued-loader-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  min-height: 160px;
+  width: 100%;
+  height: 95vh;
+  color: #dbeafe;
+  text-align: center;
+}
+
+.liqued-loader {
+  height: 4px;
+  width: 130px;
+  --c: no-repeat linear-gradient(#6100ee 0 0);
+  background: var(--c), var(--c), #d7b8fc;
+  background-size: 60% 100%;
+  animation: liqued-loader-wave 3s infinite;
+}
+
+.liqued-loader-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.page-loader {
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes liqued-loader-wave {
+  0% {
+    background-position: -150% 0, -150% 0;
+  }
+  66% {
+    background-position: 250% 0, -150% 0;
+  }
+  100% {
+    background-position: 250% 0, 250% 0;
+  }
+}

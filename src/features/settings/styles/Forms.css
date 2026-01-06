@@ -1,0 +1,113 @@
+@import "./common.css";
+
+.form-section {
+  padding: 1.5rem;
+  padding-top: 0;
+}
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.label {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  color: #d1d5db;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.form-row {
+  margin-bottom: 0.25rem;
+}
+.field-help {
+  font-size: 0.85rem;
+  color: var(--darkGray);
+  margin-top: 0.5rem;
+}
+
+.input-icon {
+  position: relative;
+}
+.input-icon .input {
+  padding-right: 2.5rem;
+}
+
+.input-icon .suffix {
+  right: 0.75rem;
+  bottom: 0.7rem;
+  color: var(--gray);
+  border: none;
+  position: absolute;
+  background: transparent;
+  cursor: pointer;
+}
+
+.input-icon .suffix:hover {
+  color: white;
+}
+
+.form-footer {
+  margin-top: 1rem;
+}
+
+
+.form-footer .btn {
+  width: 100%;
+}
+
+.form-footer .btn:hover {
+  background: linear-gradient(to right, #2563eb, #1d4ed8);
+}
+
+.form-footer .change-pass {
+  background: linear-gradient(to right, #ef4444, #dc2626);
+}
+
+.form-footer .change-pass:hover {
+  background: linear-gradient(to right, #dc2626, #b91c1c);
+}
+
+.container {
+  margin: 0 auto;
+  margin-top: 5.5rem;
+  max-width: 56rem;
+  margin-bottom: 2rem;
+}
+
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-input-wrapper .input {
+  padding-right: 2.75rem;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: var(--gray);
+  cursor: pointer;
+  display: inline-flex;
+  padding: 0;
+}
+
+.password-toggle:hover {
+  color: #fff;
+}
+
+.field-help.error {
+  color: var(--danger, #f87171);
+}
+
+.field-help.success {
+  color: var(--green-500, #34d399);
+}

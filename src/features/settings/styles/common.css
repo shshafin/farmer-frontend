@@ -1,0 +1,203 @@
+/* assumes your variables live under `.dark` in index.css */
+/* no variable re-definitions here—just classes that USE them */
+
+* {
+  box-sizing: border-box;
+}
+
+
+/* Card/Layout primitives */
+.card {
+    max-width: none;
+  background: var(--card);
+  border: 1px solid var(--cardBorder);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+}
+
+.card-padding {
+  padding: 2rem;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  padding: 1.5rem;
+  padding-bottom: 1rem;
+}
+
+/* Grid */
+.grid-2 {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 1024px) {
+  .grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radiusSm, 8px);
+  font-weight: 600;
+  height: 3rem;
+  padding: 0 1rem;
+  border: 1px solid transparent;
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease,
+    border 0.15s ease;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--primary) !important;
+  color: #fff;
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  border-color: var(--danger, #ef4444);
+  color: var(--danger, #ef4444);
+  background: red !important;
+}
+.btn-danger:hover {
+  background: var(--danger, #ef4444);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  border-color: var(--border);
+  background: transparent;
+  color: var(--muted);
+}
+.btn-outline:hover {
+  background: var(--hover);
+  color: var(--text);
+}
+
+.btn:disabled,
+.btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  background-image: none;
+}
+
+/* Inputs */
+.input,
+.textarea,
+.select {
+  width: 100%;
+  height: 3rem;
+  border-radius: var(--radiusSm, 8px);
+  border: 1px solid var(--border);
+  background: var(--hover);
+  color: var(--text);
+  padding: 0 0.75rem;
+  font-size: 0.95rem;
+  outline: none;
+}
+.textarea {
+  min-height: 5rem;
+  padding: 0.75rem;
+  resize: none;
+}
+.input:focus,
+.textarea:focus,
+.select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--primary) 25%, transparent);
+}
+
+/* Labels */
+.label {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Icon size baseline */
+.icon {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+}
+
+/* Helpers (kept to match your utilities) */
+.h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+.gray {
+  color: var(--gray);
+}
+.muted {
+  color: var(--darkGray);
+}
+.mt-16 {
+  margin-top: 1rem;
+}
+.mt-24 {
+  margin-top: 1.5rem;
+}
+.gap-24 {
+  gap: 1.5rem;
+}
+.gap-12 {
+  gap: 0.75rem;
+}
+
+/* Simple color utility add-ons that use your palette */
+.blue {
+  color: var(--primary);
+}
+.success {
+  color: var(--green-800);
+}
+
+.username {
+  width: fit-content;
+    margin: .5rem 0;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #fff;
+}
+
+.settings-page {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-form-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.settings-form-wrapper > section {
+  width: 100%;
+}
+
+.settings-form-wrapper .btn {
+  width: 100%;
+  font-size: 1rem;
+}

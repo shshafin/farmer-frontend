@@ -1,0 +1,98 @@
+.createPost {
+  width: 100%;
+  display: flex;
+  background: rgba(15, 23, 42, 0.9);
+  border-radius: calc(var(--radius) + 2px);
+  border: 1px solid #374151;
+  padding: 1rem;
+}
+
+.Text-Post {
+  width: 80%;
+  margin-right: 1rem;
+}
+
+@media screen and (max-width: 570px) {
+  .Text-Post {
+    width: 100%;
+    margin-right: 0;
+  }
+  .lable-createPost {
+    display: block !important;
+  }
+}
+
+.createPost section {
+  gap: 0.75rem;
+}
+
+.lable-createPost {
+  display: none;
+}
+
+.createPostProfile {
+  width: 2.6rem;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.textPost {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--lighterGray);
+  border-radius: 25px;
+  color: var(--gray);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.mediaPostOptions,
+.fellingPostOption {
+  cursor: pointer;
+  width: 3rem;
+  aspect-ratio: 1/1;
+  padding: .5rem;
+  border-radius: var(--radius);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.mediaPostOptions span,
+.fellingPostOption span {
+  margin-left: 0.5rem;
+}
+
+.mediaPostOptions--photo span {
+  color: #4ade80;
+}
+
+.mediaPostOptions--video span {
+  color: #38bdf8;
+}
+
+.fellingPostOption span {
+  color: #5b9dee;
+}
+
+.mediaPostOptions--photo:hover {
+  background: rgba(49, 199, 104, 0.089);
+}
+
+.mediaPostOptions--video:hover {
+  background: rgba(56, 189, 248, 0.12);
+}
+
+.fellingPostOption:hover {
+  background: rgba(91, 157, 238, 0.103);
+}
+
+.mediaPostOptions--photo:hover span,
+.mediaPostOptions--video:hover span,
+.fellingPostOption:hover span {
+  color: #ffff;
+}
+
+.mediaPostOptions--photo:hover svg,
+.mediaPostOptions--video:hover svg {
+  stroke: #ffff;
+}

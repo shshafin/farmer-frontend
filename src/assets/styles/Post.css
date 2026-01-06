@@ -1,0 +1,150 @@
+.post {
+    width: 100%;
+    overflow: hidden;
+    margin-top: 1.5rem;
+    background: var(--layoutContrast);
+    border: solid 1px #37415180;
+    border-bottom: solid #37415180 1px !important;
+    border-radius: calc(var(--radius) + 2px);
+}
+
+.post .profile {
+    width: 48px;
+    height: 48px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.post .profile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.post-header {
+    padding: 1.5rem;
+    padding-bottom: 1rem;
+}
+
+.profile-container {
+    gap: 1rem;
+    padding: .75rem;
+    border-radius: calc(var(--radius) + 2px);
+}
+
+.profile-container:hover {
+    background: #37415180;
+}
+
+.options {
+    height: 2.5rem;
+    cursor: pointer;
+    color: var(--gray);
+    border-radius: 50%;
+    padding: .5rem;
+}
+
+.options:hover {
+    background: #37415180;
+}
+
+.post .info .name {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.post .info .time {
+    color: var(--gray);
+}
+
+.post-main {
+    padding: 1.5rem 0;
+}
+
+.post-main .content {
+    margin-bottom: 1rem;
+    color: var(--text);
+    padding: 0 2rem;
+}
+
+.media-content {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    align-items: stretch !important;
+}
+
+.media-item {
+    width: 100%;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.comment-section {
+    padding: 0 1.7rem !important;
+}
+
+.media-item img,
+.media-item video {
+    width: 100%;
+    height: auto;
+}
+
+.interactions {
+    padding: 0 1rem;
+    gap: .5rem;
+}
+
+.interactions button {
+    gap: .5rem;
+    color: var(--gray);
+    padding: .5rem 1rem;
+    border-radius: 25px;
+    font-size: .875rem;
+}
+
+.interactions button svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+}
+
+.interactions .like-btn.liked,
+.interactions .like-btn.liked svg {
+    color: #EF4444;
+    fill: #EF4444;
+}
+
+.interactions .like-btn.liked {
+    background: #2E2531;
+}
+
+.interactions .like-btn.liked:hover,
+.interactions .like-btn.liked:hover svg {
+    color: #fdf4f4;
+    fill: #fdf4f4;
+}
+
+.interactions .like-btn:hover {
+    background: #EF44441A;
+}
+
+.interactions .like-btn:hover {
+    color: #F87171;
+}
+
+.interactions .likes-count:hover {
+    text-decoration: underline;
+    text-decoration-color: #F87171;
+    text-decoration-thickness: 1px;
+}
+
+.interactions .like-btn.liked .likes-count:hover {
+    text-decoration-color: #fdf4f4;
+}
+
+.interactions .comment-btn:hover {
+    color: #60A5FA;
+    background: #60a5fa2c;
+}

@@ -1,0 +1,147 @@
+@import "./common.css";
+
+/* ------------------ Cover Photo ------------------ */
+.cover-photo-wrap {
+  position: relative;
+  width: 100%;
+  height: 200px; /* adjust height as needed */
+  overflow: hidden;
+  border-radius: 8px 8px 0 0; /* rounded top corners */
+}
+
+.cover-photo-wrap img.cover-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Change Cover Button */
+.changeCover {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  padding: 6px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.changeCover svg {
+  width: 20px;
+  height: 20px;
+  color: #fff;
+}
+
+.userDetails {
+  width: 100%;
+  gap: 2.5rem;
+  padding: 2rem;
+  background: var(--surface);
+  border: solid 1px var(--border);
+  border-radius: calc(var(--radius) + 2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.profile-photo-wrap {
+  position: relative;
+}
+
+.largeProfile {
+  width: 8rem;
+  height: 8rem;
+  overflow: hidden;
+  border-radius: 50%;
+  border: solid 4px var(--primary);
+}
+
+.largeProfile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.changeProfile {
+  right: -0.2rem;
+  bottom: -0.2rem;
+  padding: 0.75rem;
+  border-radius: 50%;
+  position: absolute;
+  background: var(--primary);
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+}
+.changeProfile:hover {
+  transform: scale(1.03);
+}
+.changeProfile svg {
+  width: 1rem;
+  height: 1rem;
+  color: white;
+}
+
+.user-details .name {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: var(--text);
+  font-weight: 800;
+}
+
+.user-details .email {
+  margin-bottom: 0.5rem;
+  color: var(--gray);
+}
+
+.user-details .username {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--darkGray);
+}
+
+.user-details .status-container {
+  gap: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+.user-details .followers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.user-details .count {
+  color: var(--text);
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.user-details .text {
+  color: var(--gray);
+}
+
+.user-details .status {
+  font-size: 1rem;
+  line-height: 2rem;
+}
+
+.header-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .header-block {
+    flex-direction: row;
+    align-items: center;
+  }
+  .h2 {
+    color: white;
+    margin: 0;
+  }
+}

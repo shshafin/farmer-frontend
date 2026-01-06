@@ -1,0 +1,33 @@
+.fake-follow-section {
+    width: 100%;
+    max-width: 320px;
+    padding: 1rem;
+    height: 100vh;
+    display: inline-block;
+}
+
+.feed-area {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 1.5rem;
+    gap: 1.5rem;
+}
+
+.feed {
+    width: 100%;
+    max-width: 670px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.limit-width {
+    width: 100%;
+    max-width: 670px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}

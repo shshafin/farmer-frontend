@@ -1,0 +1,56 @@
+.userdetails-card {
+  background: var(--card);
+  border: 1px solid var(--cardBorder);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: var(--text);
+}
+
+.userdetails-avatar img {
+  border: 4px solid var(--primary);
+  border-radius: 50%;
+}
+
+.userdetails-info {
+  flex: 1;
+}
+
+.userdetails-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.userdetails-email {
+  color: var(--muted);
+}
+
+.userdetails-username {
+  color: var(--gray);
+}
+
+.userdetails-stats {
+  display: flex;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.count {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.label {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.status.online {
+  color: var(--green-800);
+}
+
+.status.offline {
+  color: var(--red-800);
+}

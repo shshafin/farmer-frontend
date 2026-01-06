@@ -1,0 +1,88 @@
+:root {
+  --radius: .5rem;
+  --rail-w: 72px;
+  --overlay-w: 280px;
+  --bg: #0c0d0f;
+  --panel: #14161a;
+  --elev: #181a20;
+  --text: #e8ebf0;
+  --muted: #9aa1ad;
+  --border: #252833;
+  --accent: #6ee7b7;
+  --active: #22d3ee;
+}
+
+.dark {
+  --gray: rgb(156 163 175 / 1);
+  --background: #111827;
+  --text: #FFFFFF;
+  --primary: #3B82F6;
+  --hover: #202631;
+  --layout: #161d26;
+  --layoutContrast: #18212F;
+  --darkGray: #475367;
+  --lighterGray: #222B3A;
+  --layoutSecondary: rgba(31, 41, 55, 0.5);
+  --border: hsl(217, 28%, 32%);
+
+  --card: var(--layout);
+  --cardBorder: #3a455b;
+  --muted: var(--gray);
+
+  /* Variants */
+  --purple-100: #E9D5FF;
+  --purple-800: #5B21B6;
+  --purple-900: #3B0764;
+
+  --indigo-100: #E0E7FF;
+  --indigo-800: #3730A3;
+  --indigo-900: #1E1B4B;
+
+  --blue-100: #DBEAFE;
+  --blue-800: #1E40AF;
+  --blue-900: #0B1C3D;
+
+  --red-100: #FEE2E2;
+  --red-800: #991B1B;
+
+  --green-100: #DCFCE7;
+  --green-800: #22c55e;
+
+  --orange-100: #FFEDD5;
+  --orange-800: #9A3412;
+}
+
+/* global layout */
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #111827;
+}
+
+#root {
+  margin-top: 4rem !important;
+}
+
+/* global utilities */
+.error { color: red; }
+.gray { color: var(--gray); }
+.green { color: var(--green-800); }
+
+.relative { position: relative; }
+.flex { display: flex; }
+.F-center { align-items: center; justify-content: center; }
+.FY-center { align-items: center; }
+.F-space { justify-content: space-between; }
+.FD-c { flex-direction: column; }
+
+.MB-1rem { margin-bottom: 1rem; }
+.text-center { text-align: center; }
+
+.close-model {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+.close-model:hover { background: var(--lighterGray); }

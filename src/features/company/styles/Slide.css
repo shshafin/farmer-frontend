@@ -1,0 +1,121 @@
+/* Viewport */
+.embla {
+  overflow: hidden;
+  padding: 0; /* no outer gap; only slide-to-slide gap */
+  margin: 0 auto;
+  width: fit-content;
+  max-width: 100%;
+  touch-action: pan-y; /* allow vertical page scroll; horizontal swipe kept */
+}
+
+/* Track */
+.embla__container {
+  display: flex; /* use flex, not grid, with embla */
+  gap: 6px;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .embla__container {
+    gap: 4px;
+  }
+}
+
+/* Slides – give them a fixed basis so they render even before image loads */
+.embla__slide {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Image sizing */
+.sizeprocut50k {
+  width: min(300px, 80vw);
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  display: block;
+}
+
+/* Arrow buttons */
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-btn.left {
+  left: 0;
+}
+.nav-btn.right {
+  right: 0;
+}
+
+.pro-back {
+  width: 40px;
+  aspect-ratio: 1/1;
+  position: absolute;
+  cursor: pointer;
+  z-index: 11;
+}
+
+@media (max-width: 768px) {
+  .pro-back {
+    width: 2rem !important;
+  }
+}
+
+.pro-back.right {
+  right: 2rem !important;
+}
+.pro-back.left {
+  left: 2rem !important;
+}
+
+.product-details-tabletitle {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 1rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.product-details-tabletitle::-webkit-scrollbar {
+  height: 8px;
+}
+
+.product-details-tabletitle::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.25);
+  border-radius: 999px;
+}
+
+.product-details-tabletitle::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.55);
+  border-radius: 999px;
+}
+
+.product-details-tabletitle::-webkit-scrollbar-thumb:hover {
+  background: rgba(37, 99, 235, 0.8);
+}
+
+.product-details-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+}
+
+.product-details-table th,
+.product-details-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+}

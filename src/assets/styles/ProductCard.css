@@ -1,0 +1,48 @@
+.product-align {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  justify-content: flex-start;
+}
+
+.si {
+  background: #2c333a;
+  border: 1px solid #807b7b;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.co {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-image {
+  height: 160px;
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cardBb {
+  padding: 12px;
+}
+
+.pronamesize {
+  font-size: 16px;
+  margin: 0 0 8px;
+  color: #e2e8f0;
+}
+
+.new {
+  font-size: 14px;
+  margin: 0;
+  color: #94a3b8;
+}

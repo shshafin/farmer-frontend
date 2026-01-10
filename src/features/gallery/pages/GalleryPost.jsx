@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import GallerySection from "../components/GallerySection";
 import { fetchAllGalleries } from "@/api/authApi";
+import { formatTimeAgo } from "@/utils/timeAgo";
 
 export default function GalleryPost() {
   const [post, setPost] = useState(null);
@@ -21,8 +22,8 @@ export default function GalleryPost() {
             title: main.description || "No description",
             description: main.description || "No description",
             datetime: main.createdAt,
-            timeText: "just now", // optional, format if you want
-            timeTitle: new Date(main.createdAt).toLocaleString(),
+            timeText: formatTimeAgo(main.createdAt),
+            timeTitle: new Date(main.createdAt).toLocaleString("bn-BD"),
           });
 
           // Rest as suggestions
@@ -32,8 +33,8 @@ export default function GalleryPost() {
             img: item.imageUrl || "/placeholder.jpg",
             title: item.description || "No description",
             datetime: item.createdAt,
-            timeText: "just now",
-            timeTitle: new Date(item.createdAt).toLocaleString(),
+            timeText: formatTimeAgo(item.createdAt),
+            timeTitle: new Date(item.createdAt).toLocaleString("bn-BD"),
           }));
           setSuggest(suggestions);
         }

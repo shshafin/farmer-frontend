@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { format } from "timeago.js";
+import { formatTimeAgo } from "@/utils/timeAgo";
 import {
   fetchNotifications,
   deleteNotification, // Matches authApi export
@@ -14,6 +14,7 @@ import imageIcon from "@/assets/icons/Image.svg";
 import followersIcon from "@/assets/icons/Followers.svg";
 import notificationIcon from "@/assets/icons/Notification.svg";
 import CloseIcon from "@/assets/IconComponents/Close";
+import { translateNotificationMessage } from "@/utils/notificationText";
 
 const iconStyle = { width: 20, height: 20 };
 const AVATAR_PLACEHOLDER = "https://i.pravatar.cc/150?u=fake";
@@ -24,27 +25,6 @@ const ensureAbsoluteUrl = (url) => {
   if (url.startsWith("http") || url.startsWith("blob:")) return url;
   const cleanPath = url.startsWith("/") ? url.slice(1) : url;
   return `${baseApi}/${cleanPath}`;
-};
-
-// Helper: Bangla Time
-const formatTimeAgoBangla = (dateString) => {
-  try {
-    const timeStr = format(dateString);
-    return timeStr
-      .replace("just now", "এইমাত্র")
-      .replace("right now", "এইমাত্র")
-      .replace(/(\d+)\s+seconds? ago/, "$1 সেকেন্ড আগে")
-      .replace(/(\d+)\s+minutes? ago/, "$1 মিনিট আগে")
-      .replace(/(\d+)\s+hours? ago/, "$1 ঘণ্টা আগে")
-      .replace(/(\d+)\s+days? ago/, "$1 দিন আগে")
-      .replace(/(\d+)\s+weeks? ago/, "$1 সপ্তাহ আগে")
-      .replace(/(\d+)\s+months? ago/, "$1 মাস আগে")
-      .replace(/(\d+)\s+years? ago/, "$1 বছর আগে")
-      .replace(/[0-9]/g, (d) => "০১২৩৪৫৬৭৮৯"[d]);
-  } catch (e) {
-    console.log(e);
-    return "";
-  }
 };
 
 function Navigation() {
@@ -157,10 +137,10 @@ function Navigation() {
           onClick={() => setIsOpen((prev) => !prev)}
           aria-haspopup="true"
           aria-expanded={isOpen}
-          aria-label="Open notifications">
+          aria-label="বিজ্ঞপ্তি খুলুন">
           <img
             src={notificationIcon}
-            alt="Notifications"
+            alt="বিজ্ঞপ্তি"
             style={iconStyle}
           />
           {unreadCount > 0 && <span className="nav-badge">{unreadCount}</span>}
@@ -228,16 +208,16 @@ function Navigation() {
                       <div className="notification-body">
                         <span className="notification-author">{name}</span>
                         <p className="notification-message">
-                          {notification.message}
+                          {translateNotificationMessage(notification.message)}
                         </p>
                         <time className="notification-time">
-                          {formatTimeAgoBangla(notification.createdAt)}
+                          {formatTimeAgo(notification.createdAt)}
                         </time>
                       </div>
                       <button
                         type="button"
                         className="notification-dismiss"
-                        aria-label="Dismiss"
+                        aria-label="মুছুন"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleDismiss(notification._id || notification.id);

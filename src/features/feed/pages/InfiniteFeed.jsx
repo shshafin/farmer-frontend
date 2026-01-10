@@ -4,6 +4,8 @@ import { toast } from "react-hot-toast";
 import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 import PostCard from "@/features/profile/components/PostCard";
 import PostModal from "@/features/profile/components/PostModal";
+import { getUserName } from "@/utils/userDisplay";
+import { toBanglaDigits } from "@/utils/timeAgo";
 import {
   fetchPosts,
   fetchMe,
@@ -52,18 +54,19 @@ const adaptUser = (
     ensureAbsoluteUrl(user.avatar) ??
     "https://i.postimg.cc/fRVdFSbg/e1ef6545-86db-4c0b-af84-36a726924e74.png";
 
-  // LOGIC CHANGE: Check 'name', 'fullName', 'fullname' BEFORE username
-  const displayName =
-    user.name ||
-    user.fullName ||
-    user.fullname ||
-    user.username ||
-    fallbackName;
+  const displayName = getUserName(user, fallbackName);
 
   return {
     id: identifier,
     name: displayName,
     username: user.username,
+    fullName: user.fullName,
+    fullname: user.fullname,
+    address: user.address,
+    state: user.state,
+    district: user.district,
+    division: user.division,
+    location: user.location,
     avatar: avatarSource,
   };
 };
@@ -122,7 +125,7 @@ const adaptFeedPost = (rawPost, viewerId) => {
       typeof entry === "object"
         ? entry
         : { id: entry, username: String(entry) },
-      `Liker ${index + 1}`
+      `লাইককারী ${toBanglaDigits(index + 1)}`
     )
   );
   const liked = viewerId
@@ -136,7 +139,7 @@ const adaptFeedPost = (rawPost, viewerId) => {
     ? rawPost.comments.map((comment, index) => {
         const authorInfo = adaptUser(
           comment?.user ?? comment?.author ?? {},
-          `Commenter ${index + 1}`
+          `মন্তব্যকারী ${toBanglaDigits(index + 1)}`
         );
         return {
           id: comment._id.toString(),
@@ -348,9 +351,16 @@ export default function InfiniteFeed() {
   // --- FULL LOGIC RESTORED FOR LIKES ---
   const handleToggleLike = useCallback(
     async (postId) => {
+      let previousState = null;
       setPosts((prev) =>
         prev.map((post) => {
           if (!sameId(post.id, postId)) return post;
+          previousState = {
+            liked: post.liked,
+            likes: post.likes,
+            likedUsers: Array.isArray(post.likedUsers) ? [...post.likedUsers] : [],
+            raw: post.raw,
+          };
           const viewerKey = viewerIdentity?.id
             ? String(viewerIdentity.id).toLowerCase()
             : null;
@@ -365,19 +375,25 @@ export default function InfiniteFeed() {
             : false;
           let updatedLikedUsers = existingLikedUsers;
           let liked = post.liked;
+          let nextLikesCount = post.likes ?? updatedLikedUsers.length;
           if (hasViewer) {
             updatedLikedUsers = existingLikedUsers.filter((user) => {
               const identifier = resolveId(user) ?? user.username;
               return identifier ? !sameId(identifier, viewerKey) : true;
             });
             liked = false;
+            nextLikesCount = updatedLikedUsers.length;
+          } else if (viewerKey) {
+            updatedLikedUsers = [...existingLikedUsers, viewerIdentity];
+            liked = true;
+            nextLikesCount = updatedLikedUsers.length;
           } else {
-            if (viewerKey) {
-              updatedLikedUsers = [...existingLikedUsers, viewerIdentity];
-              liked = true;
-            }
+            liked = !post.liked;
+            nextLikesCount = liked
+              ? (post.likes ?? 0) + 1
+              : Math.max((post.likes ?? 1) - 1, 0);
           }
-          const updatedRaw = post.raw
+          const updatedRaw = post.raw && viewerKey
             ? {
                 ...post.raw,
                 likes: liked
@@ -392,7 +408,7 @@ export default function InfiniteFeed() {
           return {
             ...post,
             liked,
-            likes: updatedLikedUsers.length,
+            likes: nextLikesCount,
             likedUsers: updatedLikedUsers,
             raw: updatedRaw,
           };
@@ -403,6 +419,15 @@ export default function InfiniteFeed() {
       } catch (error) {
         console.error("Failed to toggle like", error);
         toast.error("লাইক পরিবর্তন করা যায়নি");
+        if (previousState) {
+          setPosts((prev) =>
+            prev.map((post) =>
+              sameId(post.id, postId)
+                ? { ...post, ...previousState }
+                : post
+            )
+          );
+        }
       }
     },
     [viewerIdentity]

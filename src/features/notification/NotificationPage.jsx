@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { translateNotificationMessage } from "@/utils/notificationText";
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState([]);
@@ -12,12 +13,12 @@ export default function NotificationsPage() {
 
   return (
     <div>
-      <h2>Notifications</h2>
+      <h2>বিজ্ঞপ্তি</h2>
       {notifications.map((n) => (
         <div
           key={n._id}
           style={{ borderBottom: "1px solid #ccc", padding: "10px" }}>
-          <b>{n.sender.username}</b> {n.message}{" "}
+          <b>{n.sender.username}</b> {translateNotificationMessage(n.message)}{" "}
           {n.post?.text && `"${n.post.text}"`}
           {!n.isRead && (
             <span style={{ color: "red", marginLeft: "10px" }}>●</span>

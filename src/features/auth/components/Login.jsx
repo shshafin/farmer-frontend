@@ -72,7 +72,9 @@ export default function Login() {
     }
   };
 
-  return (
+  return (<>
+  <div className="title" style={{color: 'white'}}>কৃষক এরিয়া</div>
+
     <form onSubmit={handleSubmit} noValidate className="login">
       <div className="title">লগইন করুন</div>
 
@@ -129,5 +131,5 @@ export default function Login() {
         </NavLink>
       </section>
     </form>
-  );
+  </>);
 }

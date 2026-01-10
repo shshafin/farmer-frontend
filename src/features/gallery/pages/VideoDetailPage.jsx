@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchAllVideos } from "@/api/authApi";
+import { toBanglaDigits } from "@/utils/timeAgo";
 import "../styles/VideoDetailPage.css";
 
 // Helper to extract YouTube video ID
@@ -30,7 +31,11 @@ const formatDate = (isoString) => {
         hour12: true
     });
 
-    return `প্রকাশ: ${day} ${month} ${year}, ${time}`;
+    const dayText = toBanglaDigits(day);
+    const yearText = toBanglaDigits(year);
+    const timeText = toBanglaDigits(time);
+
+    return `প্রকাশ: ${dayText} ${month} ${yearText}, ${timeText}`;
 };
 
 const VideoDetailPage = () => {

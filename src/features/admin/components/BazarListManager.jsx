@@ -6,13 +6,13 @@ import DeleteBadgeIcon from "@/assets/IconComponents/DeleteBadgeIcon";
 import LocationPinIcon from "@/assets/IconComponents/LocationPinIcon";
 import { baseApi } from "../../../api";
 
-const timeFormatter = new Intl.DateTimeFormat("en-GB", {
+const timeFormatter = new Intl.DateTimeFormat("bn-BD", {
   hour: "2-digit",
   minute: "2-digit",
   hour12: true,
 });
 
-const dateFormatter = new Intl.DateTimeFormat("en-GB", {
+const dateFormatter = new Intl.DateTimeFormat("bn-BD", {
   day: "numeric",
   month: "long",
   year: "numeric",
@@ -20,7 +20,7 @@ const dateFormatter = new Intl.DateTimeFormat("en-GB", {
 
 const formatTimestamp = (isoString) => {
   const date = new Date(isoString);
-  if (Number.isNaN(date.getTime())) return "Unknown time";
+  if (Number.isNaN(date.getTime())) return "সময় জানা যায়নি";
   const time = timeFormatter.format(date);
   const formattedDate = dateFormatter.format(date);
   return `${time} · ${formattedDate}`;

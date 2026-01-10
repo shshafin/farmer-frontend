@@ -78,7 +78,7 @@ function UserCardBase({ user = {}, isFollowing, onToggle }) {
           <h3
             className="username"
             title={user.name || user.username}>
-            {user.username || "Unknown user"}
+            {user.name || "Unknown user"}
           </h3>
         </div>
 

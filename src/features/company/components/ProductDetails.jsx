@@ -8,7 +8,6 @@ import { baseApi } from "../../../api";
 
 export default function ProductDetails() {
   const location = useLocation();
-  // productId সরাসরি useParams থেকে নেওয়া ভালো, অথবা তোমার logic ঠিক আছে
   const pathParts = location.pathname.split("/").filter(Boolean);
   const productId = pathParts[pathParts.length - 1] || "";
 
@@ -29,7 +28,6 @@ export default function ProductDetails() {
         const allRes = await fetchAllProducts();
         const allProducts = allRes.data || [];
 
-        // শুধুমাত্র কোম্পানির ওপর ভিত্তি করে ফিল্টার
         const filtered = allProducts.filter((p) => {
           const pCompanyId = p.company?._id || p.company;
           const currCompanyId =
@@ -63,11 +61,10 @@ export default function ProductDetails() {
   if (!product)
     return (
       <p style={{ textAlign: "center", marginTop: "5rem", color: "white" }}>
-        প্রোডাক্ট পাওয়া যায়নি
+        প্রোডাক্ট পাওয়া যায়নি
       </p>
     );
 
-  // ডিস্ট্রাকচারিং (সেফটি চেক সহ)
   const {
     productImage,
     category,
@@ -82,7 +79,6 @@ export default function ProductDetails() {
     beboharBidhi,
   } = product;
 
-  // টেবিল ডেটা পার্সিং
   const safeParse = (data) => {
     try {
       return typeof data === "string" ? JSON.parse(data) : data || [];
@@ -91,14 +87,23 @@ export default function ProductDetails() {
     }
   };
 
-  const tableData = [
-    {
-      crop: safeParse(foshol).join(", "),
-      pest: safeParse(balai).join(", "),
-      dose: safeParse(matra).join(", "),
-      method: safeParse(beboharBidhi).join(", "),
-    },
-  ];
+  const crops = safeParse(foshol);
+  const pests = safeParse(balai);
+  const doses = safeParse(matra);
+  const methods = safeParse(beboharBidhi);
+
+  const maxLength = Math.max(
+    crops.length,
+    pests.length,
+    doses.length,
+    methods.length
+  );
+  const groupedData = Array.from({ length: maxLength }).map((_, i) => [
+    crops[i] || "",
+    pests[i] || "",
+    doses[i] || "",
+    methods[i] || "",
+  ]);
 
   return (
     <div style={{ marginTop: "5rem" }}>
@@ -124,29 +129,29 @@ export default function ProductDetails() {
       <div className="product-details-tablesize">
         <div className="product-details-tabletitle">
           <h2>প্রয়োগ ক্ষেত্র ও মাত্রা</h2>
-          <div className="product-details-cardgrid">
-            {tableData.map((item, i) => (
+          {/* এখানে style={{ display: "block" }} দিয়ে গ্রিড বন্ধ করা হলো যাতে ১টা কলামে থাকে */}
+          <div
+            className="product-details-cardgrid"
+            style={{ display: "block" }}>
+            {groupedData.map((group, i) => (
               <article
                 key={i}
-                className="product-details-container">
-                {/* Crops, Pest, Dose, Method Card Rendering */}
-                {[item.crop, item.pest, item.dose, item.method].map(
-                  (list, idx) => (
-                    <div
-                      key={idx}
-                      className="product-details-infocard">
-                      <div className="product-details-crops">
-                        {list.split(",").map((val, vIdx) => (
+                className="product-details-container"
+                style={{ marginBottom: "30px", width: "100%" }}>
+                <div className="product-details-infocard">
+                  <div className="product-details-crops">
+                    {group.map(
+                      (val, vIdx) =>
+                        val && (
                           <div
                             key={vIdx}
                             className="product-details-cropcard">
-                            {val.trim()}
+                            {val}
                           </div>
-                        ))}
-                      </div>
-                    </div>
-                  )
-                )}
+                        )
+                    )}
+                  </div>
+                </div>
               </article>
             ))}
           </div>
@@ -158,7 +163,6 @@ export default function ProductDetails() {
         companySlug={companySlug}
       />
 
-      {/* গ্যালারি আইটেম থাকলে দেখাবে */}
       {galleryItems.length > 0 ? (
         <SlideGallery items={galleryItems} />
       ) : (

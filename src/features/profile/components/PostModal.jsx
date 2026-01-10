@@ -2,7 +2,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
-import { format } from "timeago.js";
+import { formatTimeAgo } from "@/utils/timeAgo";
+import { getUserDistrict, getUserName } from "@/utils/userDisplay";
+import { fetchSingleUser } from "@/api/authApi";
 import DeleteOutlineIcon from "@/assets/IconComponents/DeleteOutlineIcon";
 import { LiquedLoader } from "@/components/loaders";
 import Modal from "./Modal";
@@ -41,9 +43,11 @@ export default function PostModal({
   const [activeMode, setActiveMode] = useState(mode ?? "comments");
   const [carouselHeight, setCarouselHeight] = useState(null);
   const [likesPage, setLikesPage] = useState(1);
+  const [userOverrides, setUserOverrides] = useState({});
 
   const isPointerOverMediaRef = useRef(false);
   const isVideoPlayingRef = useRef(false);
+  const userCacheRef = useRef(new Map());
 
   const effectiveStartIndex = Number.isFinite(startIndex)
     ? startIndex
@@ -53,6 +57,69 @@ export default function PostModal({
     if (!open) return;
     setActiveMode(mode ?? "comments");
   }, [open, mode]);
+
+  useEffect(() => {
+    if (!open || !post) return;
+    let cancelled = false;
+    const pendingIds = new Set();
+
+    const resolveUserKey = (entity) => {
+      if (entity == null) return null;
+      if (typeof entity === "string" || typeof entity === "number") {
+        return String(entity);
+      }
+      return entity.id ?? entity._id ?? entity.userId ?? entity.username ?? null;
+    };
+
+    const collectMissing = (user) => {
+      const id = resolveUserKey(user);
+      if (!id) return;
+      if (getUserDistrict(user)) return;
+      if (userCacheRef.current.has(id)) return;
+      pendingIds.add(id);
+    };
+
+    if (Array.isArray(post?.likedUsers)) {
+      post.likedUsers.forEach(collectMissing);
+    }
+    if (Array.isArray(post?.comments)) {
+      post.comments.forEach((comment) => collectMissing(comment?.author));
+    }
+
+    if (pendingIds.size === 0) return;
+
+    const loadMissingUsers = async () => {
+      const entries = await Promise.all(
+        Array.from(pendingIds).map(async (id) => {
+          try {
+            const res = await fetchSingleUser(id);
+            const data = res?.data ?? res;
+            return data ? [id, data] : null;
+          } catch (error) {
+            return null;
+          }
+        })
+      );
+      if (cancelled) return;
+      const nextOverrides = {};
+      entries.forEach((entry) => {
+        if (!entry) return;
+        const [id, data] = entry;
+        if (!data) return;
+        userCacheRef.current.set(id, data);
+        nextOverrides[id] = data;
+      });
+      if (Object.keys(nextOverrides).length > 0) {
+        setUserOverrides((prev) => ({ ...prev, ...nextOverrides }));
+      }
+    };
+
+    loadMissingUsers();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [open, post]);
 
   useModalVideoController(open);
   const videoRef = useRef(null);
@@ -304,6 +371,8 @@ export default function PostModal({
   };
 
   if (!post) return null;
+  const authorName = getUserName(post.author, "অজানা ব্যবহারকারী");
+  const authorDistrict = getUserDistrict(post.author);
 
   return (
     <Modal
@@ -324,7 +393,7 @@ export default function PostModal({
                 post.author?.avatar ||
                 `https://i.pravatar.cc/120?u=${post.author?.id || post.author?.name || "user"}`
               }
-              alt={post.author.name}
+              alt={authorName}
               style={{
                 width: 48,
                 height: 48,
@@ -334,10 +403,15 @@ export default function PostModal({
             />
             <div>
               <div style={{ fontWeight: 600, color: "#fff" }}>
-                {post.author.name}
+                {authorName}
               </div>
+              {authorDistrict && (
+                <div style={{ fontSize: "0.8rem", color: "#64748b" }}>
+                  {authorDistrict}
+                </div>
+              )}
               <div style={{ fontSize: "0.85rem", color: "#64748b" }}>
-                {format(post.createdAt)}
+                {formatTimeAgo(post.createdAt)}
               </div>
             </div>
           </div>
@@ -433,8 +507,13 @@ export default function PostModal({
                   marginBottom: "1rem",
                 }}>
                 <div style={{ fontWeight: 600, marginBottom: "0.35rem" }}>
-                  {post.author.name}
+                  {authorName}
                 </div>
+                {authorDistrict && (
+                  <div style={{ fontSize: "0.8rem", color: "#64748b", marginBottom: "0.35rem" }}>
+                    {authorDistrict}
+                  </div>
+                )}
                 <ExpandableText text={post.content} />
               </div>
             )}
@@ -465,24 +544,37 @@ export default function PostModal({
                 className="comment-list"
                 style={{ marginTop: "1rem" }}>
                 {visibleLikedUsers.length ? (
-                  visibleLikedUsers.map((user, idx) => (
-                    <div
-                      key={`${user?.id ?? user?.username ?? "u"}-${idx}`}
-                      className="comment-item">
-                      <img
-                        src={user?.avatar}
-                        alt={user?.name || user?.username || "User"}
-                        className="comment-item-avatar"
-                      />
+                  visibleLikedUsers.map((user, idx) => {
+                    const userKey =
+                      user?.id ?? user?._id ?? user?.userId ?? user?.username ?? null;
+                    const hydratedUser = userKey && userOverrides[userKey]
+                      ? { ...user, ...userOverrides[userKey] }
+                      : user;
+                    const likedUserName = getUserName(hydratedUser, "অজানা ব্যবহারকারী");
+                    const likedUserDistrict = getUserDistrict(
+                      hydratedUser,
+                      "জেলা জানা যায়নি"
+                    );
+                    return (
                       <div
-                        className="comment-item-body"
-                        style={{ flex: 1 }}>
-                        <h6 style={{ margin: 0 }}>
-                          {user?.name || user?.username || "User"}
-                        </h6>
+                        key={`${user?.id ?? user?.username ?? "u"}-${idx}`}
+                        className="comment-item">
+                        <img
+                          src={hydratedUser?.avatar || user?.avatar}
+                          alt={likedUserName}
+                          className="comment-item-avatar"
+                        />
+                        <div
+                          className="comment-item-body"
+                          style={{ flex: 1 }}>
+                          <h6 style={{ margin: 0 }}>{likedUserName}</h6>
+                          <div style={{ fontSize: "0.75rem", color: "#64748b" }}>
+                            {likedUserDistrict}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  ))
+                    );
+                  })
                 ) : (
                   <div className="empty-state">এখনো কোনো লাইক নেই</div>
                 )}
@@ -500,51 +592,74 @@ export default function PostModal({
               <div
                 className="comment-list"
                 style={{ marginTop: "1rem" }}>
-                {post.comments.map((comment) => (
-                  <div
-                    key={comment.id}
-                    className="comment-item">
-                    <img
-                      src={comment.author.avatar}
-                      alt={comment.author.name}
-                      className="comment-item-avatar"
-                    />
+                {post.comments.map((comment) => {
+                  const authorKey =
+                    comment?.author?.id ??
+                    comment?.author?._id ??
+                    comment?.author?.userId ??
+                    comment?.author?.username ??
+                    null;
+                  const hydratedAuthor = authorKey && userOverrides[authorKey]
+                    ? { ...comment.author, ...userOverrides[authorKey] }
+                    : comment.author;
+                  const commentAuthorName = getUserName(
+                    hydratedAuthor,
+                    "অজানা ব্যবহারকারী"
+                  );
+                  const commentAuthorDistrict = getUserDistrict(
+                    hydratedAuthor,
+                    "জেলা জানা যায়নি"
+                  );
+                  return (
                     <div
-                      className="comment-item-body"
-                      style={{ flex: 1 }}>
-                      <h6 style={{ margin: 0 }}>{comment.author.name}</h6>
-                      <p
-                        style={{
-                          margin: "4px 0",
-                          fontSize: "0.9rem",
-                          color: "#cbd5e1",
-                        }}>
-                        {comment.text}
-                      </p>
+                      key={comment.id}
+                      className="comment-item">
+                      <img
+                        src={hydratedAuthor?.avatar || comment.author?.avatar}
+                        alt={commentAuthorName}
+                        className="comment-item-avatar"
+                      />
                       <div
-                        className="comment-item-meta"
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "10px",
-                        }}>
-                        <span style={{ fontSize: "0.75rem", color: "#64748b" }}>
-                          {format(comment.createdAt)}
-                        </span>
-                        {canDeleteComment?.(comment) && (
-                          <button
-                            type="button"
-                            className="comment-delete-btn"
-                            onClick={() =>
-                              onDeleteComment?.(post.id, comment.id)
-                            }>
-                            <DeleteOutlineIcon width={14} />
-                          </button>
-                        )}
+                        className="comment-item-body"
+                        style={{ flex: 1 }}>
+                        <h6 style={{ margin: 0 }}>{commentAuthorName}</h6>
+                        <div style={{ fontSize: "0.75rem", color: "#64748b" }}>
+                          {commentAuthorDistrict}
+                        </div>
+                        <ExpandableText
+                          text={comment.text}
+                          maxLines={3}
+                          style={{
+                            margin: "4px 0",
+                            fontSize: "0.9rem",
+                            color: "#cbd5e1",
+                          }}
+                        />
+                        <div
+                          className="comment-item-meta"
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                          }}>
+                          <span style={{ fontSize: "0.75rem", color: "#64748b" }}>
+                            {formatTimeAgo(comment.createdAt)}
+                          </span>
+                          {canDeleteComment?.(comment) && (
+                            <button
+                              type="button"
+                              className="comment-delete-btn"
+                              onClick={() =>
+                                onDeleteComment?.(post.id, comment.id)
+                              }>
+                              <DeleteOutlineIcon width={14} />
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>

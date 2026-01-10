@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { translateNotificationMessage } from "@/utils/notificationText";
 
 const INITIAL_LOAD = 100;
 const PAGE_SIZE = 40;
@@ -38,7 +39,7 @@ function generateMockNotifications(total = TOTAL_ITEMS) {
 }
 
 function formatTimestamp(date) {
-  const time = date.toLocaleTimeString("en-US", {
+  const time = date.toLocaleTimeString("bn-BD", {
     hour: "2-digit",
     minute: "2-digit",
   });
@@ -142,7 +143,7 @@ export default function ManageNotificationsPage() {
 
   const requestDeleteSelected = useCallback(() => {
     if (!selectedIds.size) {
-      toast.error("Select notifications to delete first.");
+      toast.error("মুছতে কমপক্ষে একটি বিজ্ঞপ্তি নির্বাচন করুন।");
       return;
     }
     setShowConfirm(true);
@@ -158,7 +159,7 @@ export default function ManageNotificationsPage() {
     );
     setSelectedIds(new Set());
     setShowConfirm(false);
-    toast.success("Selected notifications deleted.");
+    toast.success("নির্বাচিত বিজ্ঞপ্তি মুছে ফেলা হয়েছে।");
   }, [selectedIds]);
 
   const cancelDelete = useCallback(() => {
@@ -210,7 +211,7 @@ export default function ManageNotificationsPage() {
         <div className="container-fluid">
           <div className="row mb-2">
             <div className="col-sm-6">
-              <h1 className="m-0">Manage All Notification</h1>
+              <h1 className="m-0">সব বিজ্ঞপ্তি ব্যবস্থাপনা</h1>
             </div>
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right" />
@@ -224,7 +225,7 @@ export default function ManageNotificationsPage() {
           <div className="row">
             <div className="card w-100 card-notification">
               <div className="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
-                <h3>Total Notifications = [{totalCount}]</h3>
+                <h3>মোট বিজ্ঞপ্তি = [{totalCount}]</h3>
               </div>
 
               <div className="card-body">
@@ -235,7 +236,7 @@ export default function ManageNotificationsPage() {
                       selectedIds.size ? "" : "is-inactive"
                     }`}
                     onClick={requestDeleteSelected}
-                    title="Delete selected"
+                    title="নির্বাচিত মুছুন"
                     aria-disabled={!selectedIds.size}
                     disabled={!selectedIds.size}
                   >
@@ -244,8 +245,8 @@ export default function ManageNotificationsPage() {
                   &nbsp;
                   <span className="text-muted small">
                     {selectedIds.size
-                      ? `${selectedIds.size} selected`
-                      : "Select notifications to delete"}
+                      ? `নির্বাচিত ${selectedIds.size} টি`
+                      : "মুছতে বিজ্ঞপ্তি নির্বাচন করুন"}
                   </span>
                 </div>
 
@@ -261,30 +262,30 @@ export default function ManageNotificationsPage() {
                               onChange={(event) =>
                                 handleSelectAllVisible(event.target.checked)
                               }
-                              aria-label="Select all visible notifications"
+                              aria-label="সব দৃশ্যমান বিজ্ঞপ্তি নির্বাচন করুন"
                               className="notification-checkbox"
                             />
                           </th>
                           <th className="small fw-semibold text-uppercase text-muted">
-                            ID
+                            আইডি
                           </th>
                           <th className="small fw-semibold text-uppercase text-muted">
-                            To user id
+                            প্রাপক আইডি
                           </th>
                           <th className="small fw-semibold text-uppercase text-muted">
-                            From user id
+                            প্রেরক আইডি
                           </th>
                           <th className="small fw-semibold text-uppercase text-muted">
-                            Post id
+                            পোস্ট আইডি
                           </th>
                           <th className="small fw-semibold text-uppercase text-muted">
-                            Read status
+                            পড়া হয়েছে
                           </th>
                           <th className="small fw-semibold text-uppercase text-muted">
-                            Notifications
+                            বিজ্ঞপ্তি
                           </th>
                           <th className="small fw-semibold text-uppercase text-muted">
-                            Time
+                            সময়
                           </th>
                         </tr>
                       </thead>
@@ -301,7 +302,7 @@ export default function ManageNotificationsPage() {
                                     event.target.checked
                                   )
                                 }
-                                aria-label={`Select notification ${notification.id}`}
+                                aria-label={`বিজ্ঞপ্তি নির্বাচন করুন ${notification.id}`}
                                 className="notification-checkbox"
                               />
                             </td>
@@ -323,10 +324,12 @@ export default function ManageNotificationsPage() {
                                     : "bg-warning-soft text-warning"
                                 }`}
                               >
-                                {notification.readStatus ? "Read" : "Unread"}
+                                {notification.readStatus ? "পড়া হয়েছে" : "অপঠিত"}
                               </span>
                             </td>
-                            <td className="text-dark">{notification.message}</td>
+                            <td className="text-dark">
+                              {translateNotificationMessage(notification.message)}
+                            </td>
                             <td className="text-muted">
                               {formatTimestamp(notification.createdAt)}
                             </td>
@@ -354,7 +357,7 @@ export default function ManageNotificationsPage() {
           >
             <div className="admin-modal-header">
               <h5 id="notification-delete-title" className="mb-0">
-                Delete notifications
+                বিজ্ঞপ্তি মুছুন
               </h5>
             </div>
             <div
@@ -362,13 +365,12 @@ export default function ManageNotificationsPage() {
               className="admin-modal-body"
             >
               <p className="mb-2">
-                Are you sure you want to delete{" "}
-                <strong>{selectedIds.size}</strong>{" "}
-                {selectedIds.size === 1 ? "notification" : "notifications"}?
+                আপনি কি নিশ্চিতভাবে <strong>{selectedIds.size}</strong> টি বিজ্ঞপ্তি
+                মুছতে চান?
               </p>
               <p className="text-muted mb-0">
-                This action cannot be undone and the selected notifications will
-                be removed permanently.
+                এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না এবং নির্বাচিত বিজ্ঞপ্তিগুলো
+                স্থায়ীভাবে মুছে যাবে।
               </p>
             </div>
             <div className="admin-modal-footer">
@@ -377,14 +379,14 @@ export default function ManageNotificationsPage() {
                 className="btn btn-outline-secondary btn-sm"
                 onClick={cancelDelete}
               >
-                Cancel
+                বাতিল
               </button>
               <button
                 type="button"
                 className="btn btn-danger btn-sm"
                 onClick={confirmDeleteSelected}
               >
-                Confirm Delete
+                নিশ্চিত করুন
               </button>
             </div>
           </div>

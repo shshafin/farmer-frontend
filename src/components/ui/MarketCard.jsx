@@ -1,6 +1,5 @@
 import { baseApi } from "../../api";
 
-
 export default function MarketCard({
   id,
   image,

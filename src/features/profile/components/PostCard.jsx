@@ -3,7 +3,8 @@ import { useMemo, useState } from "react";
 import ExpandableText from "@/components/ui/ExpandableText";
 import { useLocation, NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
-import { format } from "timeago.js";
+import { formatTimeAgo } from "@/utils/timeAgo";
+import { getUserDistrict, getUserName } from "@/utils/userDisplay";
 import DeleteOutlineIcon from "@/assets/IconComponents/DeleteOutlineIcon";
 import { useVideoVisibility } from "@/hooks/useVideoVisibility";
 import { baseApi } from "../../../api";
@@ -27,25 +28,6 @@ const ensureAbsoluteUrl = (url) => {
   if (url.startsWith("http") || url.startsWith("blob:")) return url;
   const cleanPath = url.startsWith("/") ? url.slice(1) : url;
   return `${API_URL}/${cleanPath}`;
-};
-
-const formatTimeAgoBangla = (dateString) => {
-  try {
-    const timeStr = format(dateString);
-    return timeStr
-      .replace("just now", "এইমাত্র")
-      .replace("right now", "এইমাত্র")
-      .replace(/(\d+)\s+seconds? ago/, "$1 সেকেন্ড আগে")
-      .replace(/(\d+)\s+minutes? ago/, "$1 মিনিট আগে")
-      .replace(/(\d+)\s+hours? ago/, "$1 ঘণ্টা আগে")
-      .replace(/(\d+)\s+days? ago/, "$1 দিন আগে")
-      .replace(/(\d+)\s+weeks? ago/, "$1 সপ্তাহ আগে")
-      .replace(/(\d+)\s+months? ago/, "$1 মাস আগে")
-      .replace(/(\d+)\s+years? ago/, "$1 বছর আগে")
-      .replace(/[0-9]/g, (d) => "০১২৩৪৫৬৭৮৯"[d]);
-  } catch (e) {
-    return "Time error";
-  }
 };
 
 export default function PostCard({
@@ -90,13 +72,9 @@ export default function PostCard({
 
     const userObj = post.user || {};
     const authObj = post.author || {};
-    const realName =
-      authObj.name ||
-      userObj.name ||
-      authObj.fullName ||
-      authObj.username ||
-      userObj.username ||
-      "Unknown";
+    const mergedAuthor = { ...userObj, ...authObj };
+    const realName = getUserName(mergedAuthor, "অজানা ব্যবহারকারী");
+    const district = getUserDistrict(mergedAuthor);
     const userId = authObj.id || authObj._id || userObj._id || userObj.id;
     const avatarRaw =
       authObj.avatar ||
@@ -109,7 +87,7 @@ export default function PostCard({
 
     return {
       normalizedGallery: gallery,
-      displayAuthor: { id: userId, name: realName, avatar },
+      displayAuthor: { id: userId, name: realName, district, avatar },
     };
   }, [post]);
 
@@ -145,7 +123,10 @@ export default function PostCard({
           />
           <div className="post-card-author">
             <h5>{displayAuthor.name}</h5>
-            <span>{formatTimeAgoBangla(post.createdAt)}</span>
+            {displayAuthor.district && (
+              <span>{displayAuthor.district}</span>
+            )}
+            <span>{formatTimeAgo(post.createdAt)}</span>
           </div>
         </NavLink>
         {showDeleteButton && (
@@ -273,7 +254,7 @@ export default function PostCard({
       </div>
 
       {/* COMMENT FORM (Restored from your logic but visible) */}
-      {/* <div className="comment-form">
+      <div className="comment-form">
         <textarea
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
@@ -284,7 +265,7 @@ export default function PostCard({
           onClick={submitComment}>
           {TEXT_COMMENT}
         </button>
-      </div> */}
+      </div>
     </article>
   );
 }

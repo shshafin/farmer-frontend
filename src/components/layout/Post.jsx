@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { format } from "timeago.js";
+import { formatTimeAgo } from "@/utils/timeAgo";
+import { getUserDistrict, getUserName } from "@/utils/userDisplay";
 
 import "@/assets/styles/Post.css";
 import "@/assets/styles/ZoomInOutOff.css";
@@ -69,10 +70,12 @@ export default function Post({
     setIsLiked(hasUserLiked);
   }, [hasUserLiked]);
 
-  const formattedTime = useMemo(
-    () => (createdAt ? format(new Date(createdAt)) : "just now"),
-    [createdAt]
+  const formattedTime = useMemo(() => formatTimeAgo(createdAt), [createdAt]);
+  const displayName = useMemo(
+    () => getUserName(user, "অজানা ব্যবহারকারী"),
+    [user]
   );
+  const displayDistrict = useMemo(() => getUserDistrict(user), [user]);
 
   const media = useMemo(() => [...images, ...videos], [images, videos]);
 
@@ -149,12 +152,15 @@ export default function Post({
                     : `${baseApi}${user.profileImage}`
                   : "https://i.postimg.cc/fRVdFSbg/e1ef6545-86db-4c0b-af84-36a726924e74.png"
               }
-              alt={`${user.username}'s profile`}
+              alt={`${displayName} প্রোফাইল`}
               className="object-cover"
             />
           </div>
           <div className="info">
-            <div className="name">{user.username}</div>
+            <div className="name">{displayName}</div>
+            {displayDistrict && (
+              <div className="time">{displayDistrict}</div>
+            )}
             <div className="time">{formattedTime}</div>
           </div>
         </NavLink>

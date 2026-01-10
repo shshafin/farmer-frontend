@@ -363,7 +363,8 @@
   margin-bottom: 0px;
 }
 
-.video-time {}
+.video-time {
+}
 
 .main-container .video-list .vid:hover .u-icon-profiler {
   visibility: visible;
@@ -524,6 +525,30 @@
   background: #343a40 !important;
 }
 
+.market-create-modal__content {
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.market-create-modal__body {
+  overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding-right: 4px;
+}
+
+.market-create-modal__preview {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  max-height: 45vh;
+  object-fit: contain;
+  border-radius: 6px;
+  margin: 0.5rem auto 0;
+}
+
 .modal-dialog {
   top: 0;
   left: 0;
@@ -543,7 +568,8 @@
   width: 0.2rem;
   height: 0.2rem;
   color: #000;
-  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e");
+  background: transparent
+    url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e");
   border-radius: 0.375rem;
   background-repeat: no-repeat;
   opacity: 0.5;
@@ -1003,7 +1029,9 @@
   height: 5px;
   padding: 0.25em 0.25em;
   color: #000;
-  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+  background: transparent
+    url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e")
+    center/1em auto no-repeat;
   border: 0;
   border-radius: 0.375rem;
   opacity: 0.5;
@@ -2063,7 +2091,6 @@
   height: calc(100vh - 4.5rem) !important;
 }
 
-
 .user-img {
   cursor: pointer;
 }
@@ -2518,7 +2545,7 @@
   width: 11%;
   height: 51px;
   background: #485057;
-  margin: .5rem auto;
+  margin: 0.5rem auto;
   border-radius: 50px;
   position: relative;
 }
@@ -2958,11 +2985,9 @@
     font-size: 1.05rem;
   }
 
-
   .comment-home-input-button textarea {
     width: 72%;
   }
-
 }
 
 /* category row grid to keep items aligned per-category */
@@ -3068,8 +3093,6 @@
   user-select: none;
   position: relative;
 }
-
-
 
 .colorboxc {
   user-select: none;
@@ -3179,7 +3202,7 @@
   text-align: center;
 }
 
-.accordion_head.active+.accordion_body {
+.accordion_head.active + .accordion_body {
   display: block;
 }
 
@@ -3219,7 +3242,7 @@
 }
 
 /* Make category headers span full width */
-.product-align>.Pctg_xh18 {
+.product-align > .Pctg_xh18 {
   width: 100%;
   margin: 0.5rem 0 0.25rem 0;
 }
@@ -3535,7 +3558,7 @@
   text-align: center;
 }
 
-.accordion_head.active+.accordion_body {
+.accordion_head.active + .accordion_body {
   display: block;
 }
 
@@ -4981,7 +5004,6 @@ h4 {
   margin: 0 auto;
 }
 
-
 .guidelines-section__body {
   max-height: 0;
   overflow: hidden;
@@ -4998,7 +5020,7 @@ h4 {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
-  padding: 1.2rem .5rem;
+  padding: 1.2rem 0.5rem;
 }
 
 .guidelines-card-grid {
@@ -5025,7 +5047,8 @@ h4 {
   text-decoration: none;
   color: inherit;
   min-height: 0;
-  transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.3s ease;
+  transition: transform 0.28s ease, border-color 0.28s ease,
+    box-shadow 0.3s ease;
   box-shadow: 0 12px 28px rgba(8, 15, 28, 0.4);
 }
 
@@ -5216,7 +5239,6 @@ h4 {
     font-size: 23px;
   }
 
-
   .product-details-displaysize {
     display: block;
     margin-bottom: 20px;
@@ -5261,7 +5283,6 @@ h4 {
     font-size: 11px;
     padding: 1px 4px;
   }
-
 }
 
 /* COMPANY PRODUCT DETALILS CSS END */
@@ -5300,7 +5321,7 @@ h4 {
   top: 1rem;
   width: 5rem;
   display: flex;
-  gap: .5rem;
+  gap: 0.5rem;
   align-items: center;
   flex-direction: column;
   height: 10rem;
@@ -5320,7 +5341,7 @@ h4 {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: .5rem;
+  padding: 0.5rem;
   border: none !important;
 }
 
@@ -5663,7 +5684,8 @@ h4 {
   margin-bottom: 50px;
 }
 
-.related-crop-list {}
+.related-crop-list {
+}
 
 .related-item {
   display: inline-block;
@@ -5781,7 +5803,7 @@ h4 {
   text-align: center;
 }
 
-.accordion_head.active+.accordion_body {
+.accordion_head.active + .accordion_body {
   display: block;
 }
 
@@ -5986,7 +6008,6 @@ h4 {
     font-size: 10px;
     padding: 1px 3px;
   }
-
 }
 
 /* Responsive rules for smaller screens */
@@ -6020,7 +6041,6 @@ h4 {
     font-size: 9px;
     padding: 1px 2px;
   }
-
 }
 
 /* Product Section Styling */
@@ -6083,13 +6103,13 @@ h4 {
 .product-section__icon-svg {
   width: 1.35rem;
   height: 1.35rem;
-  stroke: #83B2E7;
+  stroke: #83b2e7;
   /* Pink stroke */
   fill: none;
 }
 
 .product-section__icon-svg path {
-  stroke: #83B2E7;
+  stroke: #83b2e7;
 }
 
 .product-section__body {
@@ -6417,7 +6437,8 @@ h4 {
   margin: 20px;
 }
 
-.vtkkk11 {}
+.vtkkk11 {
+}
 
 .vtkkk11 video {
   width: 100%;
@@ -7117,7 +7138,7 @@ h4 {
 
 .minx_dbpx58 {
   width: 400px;
-  height: 190px;
+  height: 100%;
   background: aliceblue;
   margin: 10px;
   display: inline-block;
@@ -7134,6 +7155,9 @@ h4 {
   display: flex;
   float: left;
   width: 37%;
+  /* ইমেজের কন্টেইনারে কোনো বাড়তি প্যাডিং বা হাইট রাখা যাবে না */
+  padding: 0;
+  overflow: hidden;
 }
 
 .minxi_imgdbpx45x img {
@@ -7146,11 +7170,14 @@ h4 {
 
 .minxi_imgseslesx45x img {
   width: 100%;
+  /* মোবাইলে গ্যাপ দূর করার জন্য হাইট auto বা 100% করা ভালো */
   height: 190px;
-  margin: auto;
+  display: block; /* Gap দূর করতে সাহায্য করে */
   object-fit: cover;
   border-radius: 8px 0px 0px 8px;
   box-shadow: 0px 0px 1px white;
+  /* margin: auto সরালে ইমেজ কন্টেইনারের সাথে লেগে থাকবে */
+  margin: 0;
 }
 
 .minxd_imagxds46 {
@@ -7287,22 +7314,40 @@ h4 {
     width: 94%;
   }
 
+  /* ইমেজ কন্টেইনারের ফ্লেক্স প্রপার্টি ঠিক করা */
+  .minxi_imgseslesx45x {
+    display: flex;
+    align-items: stretch; /* ইমেজকে কন্টেইনারের সমান লম্বা রাখবে */
+    float: left;
+    width: 37%;
+  }
+
+  .minxi_imgseslesx45x img {
+    height: 136px; /* আপনার পছন্দের হাইট */
+    width: 100%;
+    margin: 0; /* margin: auto থাকলে গ্যাপ তৈরি হয়, তাই 0 করে দিন */
+    display: block;
+    object-fit: cover;
+    border-radius: 8px 0px 0px 8px;
+  }
+
   .minxd_imagxds46 {
-    height: auto;
+    height: 136px; /* ইমেজের হাইটের সাথে মিলিয়ে দিন যাতে এলাইনমেন্ট ঠিক থাকে */
+    display: flex;
+    align-items: center; /* টেক্সটকে লম্বালম্বিভাবে মাঝখানে রাখবে */
+    width: 60%;
   }
 
   .minxd_imagxds46 h4 {
     -webkit-line-clamp: 5;
     font-size: 17px;
+    margin: 0; /* বাড়তি মার্জিন রিমুভ */
+    padding: 5px 10px; /* ডানে বামে একটু স্পেসের জন্য */
   }
 
   .minxi_imgdbpx45x img {
     height: 100px;
     width: 100px;
-  }
-
-  .minxi_imgseslesx45x img {
-    height: 136px;
   }
 
   .cbtn_minxi_imgsesalesx45x img {
@@ -7406,12 +7451,12 @@ h4 {
   opacity: 1;
 }
 
-.jxr>* {
+.jxr > * {
   transform: translateY(25px);
   transition: transform 0.6s;
 }
 
-.jxr:hover>* {
+.jxr:hover > * {
   transform: translateY(0px);
 }
 
@@ -7819,7 +7864,6 @@ h4 {
   /* margin: 5px; */
 }
 
-
 .lcs {
   font-weight: bold !important;
   padding: 5px 70px !important;
@@ -8019,7 +8063,6 @@ h4 {
   width: 100%;
 }
 
-
 .spaceAddProduct {
   width: 100%;
   display: flex;
@@ -8029,7 +8072,7 @@ h4 {
 
 .addBtn {
   background: #007bff;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   border-radius: 4px;
   color: white;
 }
@@ -8096,4 +8139,17 @@ table .btn-outline-danger.disabled,
 
 .delete-action svg path {
   stroke: white;
+}
+
+@media (max-width: 768px) {
+  .minxi_imgseslesx45x img {
+    /* মোবাইলে হাইট কমিয়ে দিন যাতে কন্টেন্ট এর সাথে সামঞ্জস্য থাকে */
+    height: 100%;
+    min-height: 120px; /* একটি মিনিমাম হাইট সেট করুন */
+  }
+
+  .dixbp_xr5 {
+    display: flex;
+    align-items: stretch; /* ইমেজ এবং টেক্সট যেন সমান উচ্চতার হয় */
+  }
 }

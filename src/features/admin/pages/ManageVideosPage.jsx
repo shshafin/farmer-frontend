@@ -8,19 +8,19 @@ import "../styles/adminScoped.css";
 import { baseApi } from "../../../api";
 
 // Time & Date Formatter
-const timeFormatter = new Intl.DateTimeFormat("en-US", {
+const timeFormatter = new Intl.DateTimeFormat("bn-BD", {
   hour: "2-digit",
   minute: "2-digit",
   hour12: true,
 });
-const dateFormatter = new Intl.DateTimeFormat("en-GB", {
+const dateFormatter = new Intl.DateTimeFormat("bn-BD", {
   day: "2-digit",
   month: "long",
   year: "numeric",
 });
 const formatTimestamp = (isoString) => {
   const date = new Date(isoString);
-  if (Number.isNaN(date.getTime())) return "Unknown";
+  if (Number.isNaN(date.getTime())) return "সময় জানা যায়নি";
   const time = timeFormatter.format(date).toLowerCase();
   const formattedDate = dateFormatter.format(date);
   return `${time} (${formattedDate})`;

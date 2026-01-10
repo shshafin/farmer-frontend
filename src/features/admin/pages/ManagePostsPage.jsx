@@ -45,7 +45,7 @@ export default function ManagePostsPage() {
           const formatted = res.posts.map((post) => ({
             id: post._id,
             user: {
-              name: post.user?.username || "Unknown User",
+              name: post.user?.name || post.user?.fullName || post.user?.username || "Unknown User",
               username: post.user?.username || "unknown",
               profileImage: post.user?.profileImage,
             },

@@ -4,6 +4,7 @@ import { fetchGalleryById, fetchAllGalleries } from "@/api/authApi";
 import { baseApi } from "../../../api";
 import Card from "./Card";
 import CardNew from "./CardNew";
+import { formatTimeAgo } from "@/utils/timeAgo";
 
 export default function GallerySection({ post: initialPost, galleryId }) {
   const id = galleryId || initialPost?.id;
@@ -27,8 +28,8 @@ export default function GallerySection({ post: initialPost, galleryId }) {
           title: fetchedPost.description,
           description: fetchedPost.description,
           datetime: fetchedPost.createdAt,
-          timeText: "just now",
-          timeTitle: new Date(fetchedPost.createdAt).toLocaleString(),
+          timeText: formatTimeAgo(fetchedPost.createdAt),
+          timeTitle: new Date(fetchedPost.createdAt).toLocaleString("bn-BD"),
           user: fetchedPost.user
             ? {
                 id: fetchedPost.user._id,

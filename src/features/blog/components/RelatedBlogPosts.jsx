@@ -77,7 +77,8 @@ export default function RelatedBlogPosts({
         <h2
           id="related-blog-header"
           className="m-a">
-          <p className="corpndpbmr">{currentPost.cropTitle}</p>এর&nbsp;
+          <p className="corpndpbmr">{currentPost.category?.banglaName}</p>
+          এর&nbsp;
           <span>{currentPost.category.category}</span> সম্পর্কিত অন্যান্য
           রোগসমূহ
         </h2>

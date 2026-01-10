@@ -35,13 +35,13 @@ export default function MarcketPricePage() {
         if (res?.success && Array.isArray(res.data)) {
           const formatted = res.data.map((item) => ({
             id: item._id,
-            state: item.user.state,
-            profileImage: item.user.profileImage,
-            name: item.user.name,
-            image: item.image,
+            state: item.user?.state,
+            profileImage: item.user?.profileImage,
+            name: item?.user?.name,
+            image: item?.image,
             title: item.user?.name || "অজানা ব্যবহারকারী",
-            description: item.description || "কোনো বিবরণ নেই",
-            timeText: formatTimeAgo(item.createdAt),
+            description: item?.description || "কোনো বিবরণ নেই",
+            timeText: formatTimeAgo(item?.createdAt),
           }));
           setItems(formatted);
         }

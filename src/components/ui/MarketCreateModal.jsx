@@ -77,14 +77,14 @@ export default function MarketCreateModal({
 
   return (
     <div
-      className={`modal fade ${open ? "show" : ""}`}
+      className={`modal fade market-create-modal ${open ? "show" : ""}`}
       id="marketCreateModal"
       style={{ display: open ? "block" : "none" }}
       tabIndex="-1"
       role="dialog"
       onClick={(e) => e.target.id === "marketCreateModal" && onClose?.()}>
-      <div className="modal-dialog">
-        <div className="modal-content">
+      <div className="modal-dialog market-create-modal__dialog">
+        <div className="modal-content market-create-modal__content">
           <div className="modal-header">
             <h1 className="modal-title fs-3 m-auto">{title}</h1>
             <button
@@ -94,7 +94,7 @@ export default function MarketCreateModal({
               onClick={onClose}></button>
           </div>
 
-          <div className="modal-body">
+          <div className="modal-body market-create-modal__body">
             <div className="user-id">
               <a href={`?krishokarea_user=${user?._id || "anonymous"}`}>
                 <img
@@ -119,11 +119,7 @@ export default function MarketCreateModal({
                 <img
                   src={preview}
                   alt="selected image"
-                  style={{
-                    borderRadius: "6px",
-                    width: "50%",
-                    marginTop: "5px",
-                  }}
+                  className="market-create-modal__preview"
                 />
               )}
 

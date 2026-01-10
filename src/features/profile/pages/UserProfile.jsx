@@ -23,10 +23,13 @@ import {
   totalFollowing,
 } from "@/api/authApi";
 import { baseApi } from "../../../api";
+import { getUserName } from "@/utils/userDisplay";
 
 const avatarFromSeed = (seed) => `https://i.pravatar.cc/120?u=${seed}`;
 
 function resolveUserId(user) {
+  if (user == null) return null;
+  if (typeof user === "string" || typeof user === "number") return user;
   return user?._id ?? user?.id ?? null;
 }
 
@@ -55,18 +58,30 @@ function normalizeLikedUser(raw, fallbackSeed) {
   if (!raw) return null;
   if (typeof raw === "string" || typeof raw === "number") {
     const id = String(raw);
-    return { id, username: id, name: id, avatar: avatarFromSeed(id) };
+    return { id, username: id, name: undefined, avatar: avatarFromSeed(id) };
   }
   if (typeof raw === "object") {
     const id = raw._id ?? raw.id ?? raw.userId ?? raw.username ?? null;
     if (!id) return null;
     const username = raw.username ?? String(id);
-    const name = raw.name ?? raw.fullName ?? raw.username ?? String(id);
+    const name = raw.name ?? raw.fullName ?? raw.fullname;
     const avatarPath = raw.profileImage ?? raw.avatar ?? null;
     const avatar = avatarPath
       ? `${baseApi}${avatarPath}`
       : avatarFromSeed(username || fallbackSeed || String(id));
-    return { id, username, name, avatar };
+    return {
+      id,
+      username,
+      name,
+      fullName: raw.fullName,
+      fullname: raw.fullname,
+      address: raw.address,
+      state: raw.state,
+      district: raw.district,
+      division: raw.division,
+      location: raw.location,
+      avatar,
+    };
   }
   return null;
 }
@@ -112,6 +127,26 @@ export default function UserProfilePage() {
   }, []);
 
   const viewerId = useMemo(() => resolveUserId(currentUser), [currentUser]);
+  const viewerIdentity = useMemo(() => {
+    if (currentUser) {
+      const fallbackSeed = currentUser.username || currentUser.name || "viewer";
+      return {
+        ...currentUser,
+        id: resolveUserId(currentUser) ?? `viewer-${fallbackSeed}`,
+        name: getUserName(currentUser, "আপনি"),
+        username: currentUser.username || fallbackSeed,
+        avatar: currentUser.profileImage
+          ? `${baseApi}${currentUser.profileImage}`
+          : avatarFromSeed(fallbackSeed),
+      };
+    }
+    return {
+      id: "viewer-guest",
+      name: "আপনি",
+      username: "guest",
+      avatar: avatarFromSeed("guest"),
+    };
+  }, [currentUser]);
   const profileOwnerId = useMemo(() => resolveUserId(profile), [profile]);
 
   const activePost = useMemo(
@@ -169,7 +204,15 @@ export default function UserProfilePage() {
             id: post._id,
             author: {
               id: post.user?._id || post.userId,
-              name: post.user?.username || post.user?.name || "Unknown",
+              name: getUserName(post.user, "অজানা ব্যবহারকারী"),
+              fullName: post.user?.fullName,
+              fullname: post.user?.fullname,
+              address: post.user?.address,
+              state: post.user?.state,
+              district: post.user?.district,
+              division: post.user?.division,
+              location: post.user?.location,
+              username: post.user?.username,
               avatar: post.user?.profileImage
                 ? `${baseApi}${post.user.profileImage}`
                 : avatarFromSeed(post.user?.username || "user"),
@@ -183,7 +226,15 @@ export default function UserProfilePage() {
               text: c.text,
               author: {
                 id: resolveUserId(c.user),
-                name: c.user?.username || c.user?.name || "Unknown",
+                name: getUserName(c.user, "অজানা ব্যবহারকারী"),
+                fullName: c.user?.fullName,
+                fullname: c.user?.fullname,
+                address: c.user?.address,
+                state: c.user?.state,
+                district: c.user?.district,
+                division: c.user?.division,
+                location: c.user?.location,
+                username: c.user?.username,
                 avatar: c.user?.profileImage
                   ? `${baseApi}${c.user?.profileImage}`
                   : avatarFromSeed(c.user?.username || "user"),
@@ -302,12 +353,60 @@ export default function UserProfilePage() {
   const toggleLike = useCallback(
     async (postId) => {
       if (!postId) return;
+      let previousState = null;
       setPosts((prev) =>
         prev.map((p) => {
           if (String(p.id) !== String(postId)) return p;
-          const willLike = !p.liked;
-          const nextLikes = willLike ? (p.likes ?? 0) + 1 : Math.max((p.likes ?? 1) - 1, 0);
-          return { ...p, liked: willLike, likes: nextLikes };
+          previousState = {
+            liked: p.liked,
+            likes: p.likes,
+            likedUsers: Array.isArray(p.likedUsers) ? [...p.likedUsers] : [],
+          };
+          const viewerKey = viewerIdentity?.id
+            ? String(viewerIdentity.id).toLowerCase()
+            : null;
+          const existingLikedUsers = Array.isArray(p.likedUsers)
+            ? p.likedUsers
+            : [];
+          const hasViewer = viewerKey
+            ? existingLikedUsers.some((user) => {
+                const identifier = resolveUserId(user) ?? user?.username;
+                return identifier
+                  ? String(identifier).toLowerCase() === viewerKey
+                  : false;
+              })
+            : false;
+
+          let updatedLikedUsers = existingLikedUsers;
+          let liked = p.liked;
+          let nextLikesCount = p.likes ?? updatedLikedUsers.length;
+
+          if (hasViewer) {
+            updatedLikedUsers = existingLikedUsers.filter((user) => {
+              const identifier = resolveUserId(user) ?? user?.username;
+              return identifier
+                ? String(identifier).toLowerCase() !== viewerKey
+                : true;
+            });
+            liked = false;
+            nextLikesCount = updatedLikedUsers.length;
+          } else if (viewerKey) {
+            updatedLikedUsers = [...existingLikedUsers, viewerIdentity];
+            liked = true;
+            nextLikesCount = updatedLikedUsers.length;
+          } else {
+            liked = !p.liked;
+            nextLikesCount = liked
+              ? (p.likes ?? 0) + 1
+              : Math.max((p.likes ?? 1) - 1, 0);
+          }
+
+          return {
+            ...p,
+            liked,
+            likes: nextLikesCount,
+            likedUsers: updatedLikedUsers,
+          };
         })
       );
 
@@ -316,18 +415,18 @@ export default function UserProfilePage() {
       } catch (error) {
         console.error("Failed to toggle like", error);
         toast.error("Like করা যায়নি");
-        // revert optimistic update
-        setPosts((prev) =>
-          prev.map((p) => {
-            if (String(p.id) !== String(postId)) return p;
-            const willLike = !p.liked;
-            const nextLikes = willLike ? (p.likes ?? 0) + 1 : Math.max((p.likes ?? 1) - 1, 0);
-            return { ...p, liked: willLike, likes: nextLikes };
-          })
-        );
+        if (previousState) {
+          setPosts((prev) =>
+            prev.map((p) =>
+              String(p.id) === String(postId)
+                ? { ...p, ...previousState }
+                : p
+            )
+          );
+        }
       }
     },
-    []
+    [viewerIdentity]
   );
 
   const addComment = useCallback(
@@ -341,16 +440,24 @@ export default function UserProfilePage() {
         const latest = payload?.post?.comments?.slice(-1)?.[0] ?? payload?.comment ?? null;
 
         const fallbackSeed = currentUser?.username || currentUser?.name || "you";
+        const commentUser = latest?.user ?? currentUser ?? {};
         const newComment = {
           id: latest?._id ?? latest?.id ?? `c-${Date.now()}`,
           text: latest?.text ?? latest?.content ?? value,
           createdAt: latest?.createdAt ?? new Date().toISOString(),
           author: {
-            id: resolveUserId(latest?.user) ?? viewerId ?? `viewer-${fallbackSeed}`,
-            name: latest?.user?.username ?? latest?.user?.name ?? currentUser?.username ?? "You",
-            username: latest?.user?.username ?? currentUser?.username ?? fallbackSeed,
-            avatar: latest?.user?.profileImage
-              ? `${baseApi}${latest.user.profileImage}`
+            id: resolveUserId(commentUser) ?? viewerId ?? `viewer-${fallbackSeed}`,
+            name: getUserName(commentUser, "আপনি"),
+            fullName: commentUser?.fullName,
+            fullname: commentUser?.fullname,
+            address: commentUser?.address,
+            state: commentUser?.state,
+            district: commentUser?.district,
+            division: commentUser?.division,
+            location: commentUser?.location,
+            username: commentUser?.username ?? currentUser?.username ?? fallbackSeed,
+            avatar: commentUser?.profileImage
+              ? `${baseApi}${commentUser.profileImage}`
               : currentUser?.profileImage
                 ? `${baseApi}${currentUser.profileImage}`
                 : avatarFromSeed(fallbackSeed),

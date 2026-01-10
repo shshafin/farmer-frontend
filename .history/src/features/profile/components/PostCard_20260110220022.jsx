@@ -263,7 +263,7 @@ export default function PostCard({
           onClick={submitComment}>
           {TEXT_COMMENT}
         </button> */}
-      {/* </div> */}
+      </div>
     </article>
   );
 }

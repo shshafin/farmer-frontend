@@ -123,7 +123,9 @@ export default function PostCard({
           />
           <div className="post-card-author">
             <h5>{displayAuthor.name}</h5>
-            {displayAuthor.district && <span>{displayAuthor.district}</span>}
+            {displayAuthor.district && (
+              <span>{displayAuthor.district}</span>
+            )}
             <span>{formatTimeAgo(post.createdAt)}</span>
           </div>
         </NavLink>
@@ -252,7 +254,7 @@ export default function PostCard({
       </div>
 
       {/* COMMENT FORM (Restored from your logic but visible) */}
-      {/* <div className="comment-form">
+      <div className="comment-form">
         <textarea
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
@@ -262,8 +264,8 @@ export default function PostCard({
           type="button"
           onClick={submitComment}>
           {TEXT_COMMENT}
-        </button> */}
-      {/* </div> */}
+        </button>
+      </div>
     </article>
   );
 }
